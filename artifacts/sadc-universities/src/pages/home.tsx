@@ -25,7 +25,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [compareMode, setCompareMode] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
-  const [region, setRegion] = useState<Region>("Southern Africa");
+  const [region, setRegion] = useState<Region>("All");
   const [, navigate] = useLocation();
   const { favorites } = useFavorites();
 
