@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "SADC Universities Guide"
+version = "1.0.0"
+id = "artifacts/sadc-universities"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19806
+
+[services.development]
+run = "pnpm --filter @workspace/sadc-universities run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sadc-universities", "run", "build" ]
+publicDir = "artifacts/sadc-universities/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19806"
+BASE_PATH = "/"
