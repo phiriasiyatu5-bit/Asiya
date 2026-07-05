@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search } from "lucide-react";
+import { Search, GitCompare, CheckCircle2, Circle } from "lucide-react";
 import { SADC_COUNTRIES } from "@/data";
 
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.05,
-    },
+    transition: { staggerChildren: 0.05 },
   },
 };
 
@@ -21,6 +19,9 @@ const item = {
 
 export default function Home() {
   const [query, setQuery] = useState("");
+  const [compareMode, setCompareMode] = useState(false);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [, navigate] = useLocation();
 
   const trimmed = query.trim().toLowerCase();
 
@@ -34,6 +35,21 @@ export default function Home() {
     : [];
 
   const totalMatches = searchResults.reduce((sum, r) => sum + r.matched.length, 0);
+
+  function toggleCountry(id: string) {
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  }
+
+  function startCompare() {
+    navigate(`/compare?countries=${selected.join(",")}`);
+  }
+
+  function exitCompareMode() {
+    setCompareMode(false);
+    setSelected([]);
+  }
 
   return (
     <div className="min-h-[100dvh] w-full px-6 py-16 md:px-12 md:py-24 max-w-6xl mx-auto">
@@ -55,30 +71,77 @@ export default function Home() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-10 max-w-xl"
+        className="mb-10 flex flex-col sm:flex-row gap-3 max-w-2xl"
       >
-        <div className="relative">
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
-            size={18}
-          />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search universities across all countries..."
-            data-testid="input-search-universities"
-            className="w-full pl-11 pr-4 py-3 rounded-sm border border-border bg-card text-foreground placeholder:text-muted-foreground font-sans text-base focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/10 transition-all"
-          />
-        </div>
-        {trimmed && (
-          <p className="mt-2 text-sm text-muted-foreground font-sans">
-            {totalMatches === 0
-              ? "No universities found"
-              : `${totalMatches} result${totalMatches !== 1 ? "s" : ""} across ${searchResults.length} countr${searchResults.length !== 1 ? "ies" : "y"}`}
-          </p>
+        {!compareMode && (
+          <div className="relative flex-1">
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+              size={18}
+            />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search universities across all countries..."
+              data-testid="input-search-universities"
+              className="w-full pl-11 pr-4 py-3 rounded-sm border border-border bg-card text-foreground placeholder:text-muted-foreground font-sans text-base focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/10 transition-all"
+            />
+          </div>
+        )}
+
+        {!trimmed && (
+          <button
+            onClick={compareMode ? exitCompareMode : () => setCompareMode(true)}
+            data-testid="button-toggle-compare"
+            className={`inline-flex items-center gap-2 px-5 py-3 rounded-sm border font-sans text-sm font-medium transition-all whitespace-nowrap ${
+              compareMode
+                ? "bg-muted border-border text-muted-foreground hover:text-foreground"
+                : "bg-card border-border text-foreground hover:border-primary/50 hover:text-primary"
+            }`}
+          >
+            <GitCompare size={16} />
+            {compareMode ? "Cancel" : "Compare Countries"}
+          </button>
         )}
       </motion.div>
+
+      {trimmed && (
+        <p className="mb-4 text-sm text-muted-foreground font-sans">
+          {totalMatches === 0
+            ? "No universities found"
+            : `${totalMatches} result${totalMatches !== 1 ? "s" : ""} across ${searchResults.length} countr${searchResults.length !== 1 ? "ies" : "y"}`}
+        </p>
+      )}
+
+      {compareMode && !trimmed && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 flex items-center justify-between flex-wrap gap-4"
+        >
+          <p className="font-sans text-sm text-muted-foreground">
+            {selected.length === 0
+              ? "Select two or more countries to compare"
+              : `${selected.length} countr${selected.length !== 1 ? "ies" : "y"} selected`}
+          </p>
+          <AnimatePresence>
+            {selected.length >= 2 && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                onClick={startCompare}
+                data-testid="button-compare-selected"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-primary text-primary-foreground font-sans text-sm font-medium hover:opacity-90 transition-opacity"
+              >
+                <GitCompare size={15} />
+                Compare {selected.length} Countries
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
 
       <AnimatePresence mode="wait">
         {trimmed ? (
@@ -145,29 +208,61 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {SADC_COUNTRIES.map((country) => (
-              <motion.div key={country.id} variants={item}>
-                <Link
-                  href={`/country/${country.id}`}
-                  className="block group h-full"
-                  data-testid={`link-country-${country.id}`}
-                >
-                  <div className="h-full border border-border bg-card hover:bg-muted/30 hover:border-primary/40 transition-colors duration-300 p-8 flex flex-col justify-between items-start rounded-sm hover-elevate">
-                    <div>
-                      <div className="text-5xl mb-6 shadow-sm inline-block rounded-sm overflow-hidden" aria-hidden="true">
-                        {country.flag}
+            {SADC_COUNTRIES.map((country) => {
+              const isSelected = selected.includes(country.id);
+              return (
+                <motion.div key={country.id} variants={item}>
+                  {compareMode ? (
+                    <button
+                      onClick={() => toggleCountry(country.id)}
+                      data-testid={`button-select-country-${country.id}`}
+                      className={`w-full h-full text-left border rounded-sm p-8 flex flex-col justify-between items-start transition-all duration-200 ${
+                        isSelected
+                          ? "bg-primary/5 border-primary"
+                          : "bg-card border-border hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="w-full flex justify-between items-start">
+                        <div className="text-5xl mb-6 shadow-sm inline-block rounded-sm overflow-hidden" aria-hidden="true">
+                          {country.flag}
+                        </div>
+                        {isSelected ? (
+                          <CheckCircle2 size={20} className="text-primary mt-1 shrink-0" />
+                        ) : (
+                          <Circle size={20} className="text-muted-foreground/40 mt-1 shrink-0" />
+                        )}
                       </div>
-                      <h2 className="text-2xl text-foreground font-medium group-hover:text-primary transition-colors">
+                      <h2 className={`text-2xl font-medium transition-colors ${isSelected ? "text-primary" : "text-foreground"}`}>
                         {country.name}
                       </h2>
-                    </div>
-                    <div className="mt-8 font-sans text-sm tracking-wider text-muted-foreground uppercase font-medium">
-                      {country.universities.length} Institutions
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+                      <div className="mt-8 font-sans text-sm tracking-wider text-muted-foreground uppercase font-medium">
+                        {country.universities.length} Institutions
+                      </div>
+                    </button>
+                  ) : (
+                    <Link
+                      href={`/country/${country.id}`}
+                      className="block group h-full"
+                      data-testid={`link-country-${country.id}`}
+                    >
+                      <div className="h-full border border-border bg-card hover:bg-muted/30 hover:border-primary/40 transition-colors duration-300 p-8 flex flex-col justify-between items-start rounded-sm">
+                        <div>
+                          <div className="text-5xl mb-6 shadow-sm inline-block rounded-sm overflow-hidden" aria-hidden="true">
+                            {country.flag}
+                          </div>
+                          <h2 className="text-2xl text-foreground font-medium group-hover:text-primary transition-colors">
+                            {country.name}
+                          </h2>
+                        </div>
+                        <div className="mt-8 font-sans text-sm tracking-wider text-muted-foreground uppercase font-medium">
+                          {country.universities.length} Institutions
+                        </div>
+                      </div>
+                    </Link>
+                  )}
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>
