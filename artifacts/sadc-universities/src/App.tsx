@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import Country from "@/pages/country";
 import Compare from "@/pages/compare";
 import Favorites from "@/pages/favorites";
+import Stats from "@/pages/stats";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/country/:id" component={Country} />
       <Route path="/compare" component={Compare} />
       <Route path="/favorites" component={Favorites} />
+      <Route path="/stats" component={Stats} />
       <Route component={NotFound} />
     </Switch>
   );

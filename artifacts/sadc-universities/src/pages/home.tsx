@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, GitCompare, CheckCircle2, Circle, Bookmark, Shuffle } from "lucide-react";
+import { Search, GitCompare, CheckCircle2, Circle, Bookmark, Shuffle, BarChart2 } from "lucide-react";
 import { SADC_COUNTRIES } from "@/data";
 import { useFavorites } from "@/hooks/useFavorites";
 
@@ -81,7 +81,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl text-primary tracking-tight">
             Southern African<br />Development Community
           </h1>
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
             <button
               onClick={goRandom}
               data-testid="button-random-university"
@@ -90,6 +90,14 @@ export default function Home() {
               <Shuffle size={15} />
               Discover
             </button>
+            <Link
+              href="/stats"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors shrink-0"
+              data-testid="link-stats"
+            >
+              <BarChart2 size={15} />
+              Statistics
+            </Link>
             <Link
               href="/favorites"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors shrink-0"
