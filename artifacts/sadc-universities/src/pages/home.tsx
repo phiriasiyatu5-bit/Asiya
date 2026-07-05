@@ -18,15 +18,25 @@ const item = {
   show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
 };
 
+const REGIONS = ["All", "Southern Africa", "East Africa", "Central Africa", "Indian Ocean"] as const;
+type Region = typeof REGIONS[number];
+
 export default function Home() {
   const [query, setQuery] = useState("");
   const [compareMode, setCompareMode] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+  const [region, setRegion] = useState<Region>("Southern Africa");
   const [, navigate] = useLocation();
   const { favorites } = useFavorites();
 
+  const visibleCountries =
+    region === "All"
+      ? SADC_COUNTRIES
+      : SADC_COUNTRIES.filter((c) => c.region === region);
+
   function goRandom() {
-    const country = SADC_COUNTRIES[Math.floor(Math.random() * SADC_COUNTRIES.length)];
+    const pool = visibleCountries;
+    const country = pool[Math.floor(Math.random() * pool.length)];
     const uni = country.universities[Math.floor(Math.random() * country.universities.length)];
     navigate(`/country/${country.id}?open=${encodeURIComponent(uni.name)}`);
   }
@@ -34,7 +44,7 @@ export default function Home() {
   const trimmed = query.trim().toLowerCase();
 
   const searchResults = trimmed
-    ? SADC_COUNTRIES.flatMap((country) => {
+    ? visibleCountries.flatMap((country) => {
         const matched = country.universities.filter((u) =>
           u.name.toLowerCase().includes(trimmed)
         );
@@ -100,6 +110,36 @@ export default function Home() {
         </p>
       </motion.div>
 
+      {/* Region filter */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
+        className="mb-8 flex flex-wrap gap-2"
+        data-testid="region-filter"
+      >
+        {REGIONS.map((r) => (
+          <button
+            key={r}
+            onClick={() => { setRegion(r); setSelected([]); }}
+            data-testid={`filter-region-${r.replace(/\s+/g, "-").toLowerCase()}`}
+            className={`px-4 py-1.5 rounded-full border font-sans text-sm font-medium transition-all ${
+              region === r
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
+            }`}
+          >
+            {r}
+          </button>
+        ))}
+        {region !== "All" && (
+          <span className="ml-1 self-center font-sans text-xs text-muted-foreground">
+            {visibleCountries.length} countr{visibleCountries.length !== 1 ? "ies" : "y"}
+          </span>
+        )}
+      </motion.div>
+
+      {/* Search + compare row */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -116,7 +156,7 @@ export default function Home() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search universities across all countries..."
+              placeholder={`Search universities in ${region === "All" ? "all regions" : region}…`}
               data-testid="input-search-universities"
               className="w-full pl-11 pr-4 py-3 rounded-sm border border-border bg-card text-foreground placeholder:text-muted-foreground font-sans text-base focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/10 transition-all"
             />
@@ -179,7 +219,7 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {trimmed ? (
           <motion.div
-            key="search-results"
+            key={`search-${region}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
@@ -234,14 +274,14 @@ export default function Home() {
           </motion.div>
         ) : (
           <motion.div
-            key="country-grid"
+            key={`grid-${region}`}
             variants={container}
             initial="hidden"
             animate="show"
             exit={{ opacity: 0 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {SADC_COUNTRIES.map((country) => {
+            {visibleCountries.map((country) => {
               const isSelected = selected.includes(country.id);
               return (
                 <motion.div key={country.id} variants={item}>
