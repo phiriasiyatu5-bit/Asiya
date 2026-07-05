@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowLeft, Building2, Bookmark, MapPin, Globe, Languages } from "lucide-react";
@@ -13,6 +13,16 @@ export default function Country() {
   const country = SADC_COUNTRIES.find((c) => c.id === params.id);
   const { isFavorite, toggle } = useFavorites();
   const [selected, setSelected] = useState<University | null>(null);
+
+  useEffect(() => {
+    if (!country) return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const openName = urlParams.get("open");
+    if (openName) {
+      const uni = country.universities.find((u) => u.name === openName);
+      if (uni) setSelected(uni);
+    }
+  }, [country]);
 
   if (!country) {
     return <NotFound />;

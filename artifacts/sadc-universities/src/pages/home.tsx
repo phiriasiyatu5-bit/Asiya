@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, GitCompare, CheckCircle2, Circle, Bookmark } from "lucide-react";
+import { Search, GitCompare, CheckCircle2, Circle, Bookmark, Shuffle } from "lucide-react";
 import { SADC_COUNTRIES } from "@/data";
 import { useFavorites } from "@/hooks/useFavorites";
 
@@ -24,6 +24,12 @@ export default function Home() {
   const [selected, setSelected] = useState<string[]>([]);
   const [, navigate] = useLocation();
   const { favorites } = useFavorites();
+
+  function goRandom() {
+    const country = SADC_COUNTRIES[Math.floor(Math.random() * SADC_COUNTRIES.length)];
+    const uni = country.universities[Math.floor(Math.random() * country.universities.length)];
+    navigate(`/country/${country.id}?open=${encodeURIComponent(uni.name)}`);
+  }
 
   const trimmed = query.trim().toLowerCase();
 
@@ -65,19 +71,29 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl text-primary tracking-tight">
             Southern African<br />Development Community
           </h1>
-          <Link
-            href="/favorites"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors shrink-0 mt-1"
-            data-testid="link-favorites"
-          >
-            <Bookmark size={15} />
-            Saved
-            {favorites.length > 0 && (
-              <span className="ml-0.5 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                {favorites.length}
-              </span>
-            )}
-          </Link>
+          <div className="flex items-center gap-2 mt-1">
+            <button
+              onClick={goRandom}
+              data-testid="button-random-university"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors shrink-0"
+            >
+              <Shuffle size={15} />
+              Discover
+            </button>
+            <Link
+              href="/favorites"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors shrink-0"
+              data-testid="link-favorites"
+            >
+              <Bookmark size={15} />
+              Saved
+              {favorites.length > 0 && (
+                <span className="ml-0.5 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                  {favorites.length}
+                </span>
+              )}
+            </Link>
+          </div>
         </div>
         <p className="text-xl md:text-2xl text-muted-foreground font-sans max-w-2xl">
           A definitive guide to higher education institutions across the SADC region. Explore academic excellence spanning fifteen nations.
