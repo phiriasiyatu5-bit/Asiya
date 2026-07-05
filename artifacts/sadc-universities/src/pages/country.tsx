@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, Building2, Bookmark, MapPin, Globe, Languages } from "lucide-react";
+import { ArrowLeft, Building2, Bookmark, MapPin, Globe, Languages, Printer } from "lucide-react";
 import { SADC_COUNTRIES } from "@/data";
 import type { University } from "@/data";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -30,12 +30,13 @@ export default function Country() {
 
   return (
     <>
-      <div className="min-h-[100dvh] w-full px-6 py-12 md:px-12 md:py-20 max-w-4xl mx-auto">
+      {/* ── Screen layout ── */}
+      <div className="no-print min-h-[100dvh] w-full px-6 py-12 md:px-12 md:py-20 max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
-          className="mb-12 flex items-center justify-between"
+          className="mb-12 flex items-center justify-between gap-4 flex-wrap"
         >
           <Link
             href="/"
@@ -45,14 +46,25 @@ export default function Country() {
             <ArrowLeft size={16} />
             Back to Directory
           </Link>
-          <Link
-            href="/favorites"
-            className="inline-flex items-center gap-2 text-sm font-sans font-medium text-muted-foreground hover:text-primary transition-colors"
-            data-testid="link-favorites"
-          >
-            <Bookmark size={15} />
-            Saved
-          </Link>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => window.print()}
+              data-testid="button-print"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+            >
+              <Printer size={15} />
+              Export PDF
+            </button>
+            <Link
+              href="/favorites"
+              className="inline-flex items-center gap-2 text-sm font-sans font-medium text-muted-foreground hover:text-primary transition-colors"
+              data-testid="link-favorites"
+            >
+              <Bookmark size={15} />
+              Saved
+            </Link>
+          </div>
         </motion.div>
 
         <motion.div
@@ -86,9 +98,7 @@ export default function Country() {
             <div className="bg-card border border-border rounded-sm p-5 flex items-start gap-3">
               <MapPin size={16} className="text-primary/60 mt-0.5 shrink-0" />
               <div>
-                <p className="font-sans text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                  Capital
-                </p>
+                <p className="font-sans text-xs text-muted-foreground uppercase tracking-wider mb-1">Capital</p>
                 <p className="font-sans text-base font-medium text-foreground" data-testid="country-capital">
                   {country.capital}
                 </p>
@@ -98,9 +108,7 @@ export default function Country() {
             <div className="bg-card border border-border rounded-sm p-5 flex items-start gap-3">
               <Globe size={16} className="text-primary/60 mt-0.5 shrink-0" />
               <div>
-                <p className="font-sans text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                  Region
-                </p>
+                <p className="font-sans text-xs text-muted-foreground uppercase tracking-wider mb-1">Region</p>
                 <p className="font-sans text-base font-medium text-foreground" data-testid="country-region">
                   {country.region}
                 </p>
@@ -110,15 +118,10 @@ export default function Country() {
             <div className="bg-card border border-border rounded-sm p-5 flex items-start gap-3">
               <Languages size={16} className="text-primary/60 mt-0.5 shrink-0" />
               <div>
-                <p className="font-sans text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                  Languages
-                </p>
+                <p className="font-sans text-xs text-muted-foreground uppercase tracking-wider mb-1">Languages</p>
                 <div className="flex flex-wrap gap-1 mt-1" data-testid="country-languages">
                   {country.languages.map((lang) => (
-                    <span
-                      key={lang}
-                      className="inline-block text-xs font-sans bg-muted text-muted-foreground px-2 py-0.5 rounded-full"
-                    >
+                    <span key={lang} className="inline-block text-xs font-sans bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
                       {lang}
                     </span>
                   ))}
@@ -130,7 +133,6 @@ export default function Country() {
           {/* Universities list */}
           <div className="space-y-6">
             <h2 className="text-2xl text-foreground font-serif mb-8">Universities & Colleges</h2>
-
             <div className="grid grid-cols-1 gap-4">
               {country.universities.map((uni, idx) => {
                 const fav = isFavorite(uni.name);
@@ -187,6 +189,45 @@ export default function Country() {
             </div>
           </div>
         </motion.div>
+      </div>
+
+      {/* ── Print-only layout ── */}
+      <div className="print-page hidden print:block">
+        <div className="print-header">
+          <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#8b3a2a", fontFamily: "Georgia, serif" }}>
+            {country.flag} {country.name}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.25rem" }}>
+            SADC Universities Guide · {country.universities.length} Registered Institutions
+          </div>
+        </div>
+
+        <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "1rem", fontSize: "0.8rem", color: "#555" }}>
+          <tbody>
+            <tr>
+              <td style={{ paddingRight: "2rem", paddingBottom: "0.25rem" }}><strong>Capital:</strong> {country.capital}</td>
+              <td style={{ paddingRight: "2rem", paddingBottom: "0.25rem" }}><strong>Region:</strong> {country.region}</td>
+              <td style={{ paddingBottom: "0.25rem" }}><strong>Languages:</strong> {country.languages.join(", ")}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style={{ fontFamily: "Georgia, serif", fontSize: "1rem", fontWeight: 600, marginBottom: "0.75rem", marginTop: "1rem" }}>
+          Universities & Colleges
+        </div>
+
+        {country.universities.map((uni, idx) => (
+          <div key={uni.name} className="print-uni-row">
+            <span style={{ fontSize: "0.8rem", color: "#aaa", width: "1.2rem", flexShrink: 0 }}>{idx + 1}</span>
+            <span className="print-uni-name">{uni.name}</span>
+            <span className="print-uni-meta">{uni.type} · Est. {uni.founded}</span>
+            <span className="print-uni-meta" style={{ color: "#8b3a2a" }}>{uni.website.replace("https://", "")}</span>
+          </div>
+        ))}
+
+        <div className="print-footer">
+          SADC Universities Guide · Printed {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+        </div>
       </div>
 
       <UniversityModal
