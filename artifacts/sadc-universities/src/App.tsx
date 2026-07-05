@@ -6,6 +6,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Country from "@/pages/country";
 import Compare from "@/pages/compare";
+import Favorites from "@/pages/favorites";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/country/:id" component={Country} />
       <Route path="/compare" component={Compare} />
+      <Route path="/favorites" component={Favorites} />
       <Route component={NotFound} />
     </Switch>
   );

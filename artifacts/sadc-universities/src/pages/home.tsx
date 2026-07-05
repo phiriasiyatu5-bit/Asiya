@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, GitCompare, CheckCircle2, Circle } from "lucide-react";
+import { Search, GitCompare, CheckCircle2, Circle, Bookmark } from "lucide-react";
 import { SADC_COUNTRIES } from "@/data";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const container = {
   hidden: { opacity: 0 },
@@ -22,6 +23,7 @@ export default function Home() {
   const [compareMode, setCompareMode] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [, navigate] = useLocation();
+  const { favorites } = useFavorites();
 
   const trimmed = query.trim().toLowerCase();
 
@@ -59,9 +61,24 @@ export default function Home() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="mb-12 md:mb-16 text-center md:text-left"
       >
-        <h1 className="text-4xl md:text-6xl text-primary mb-6 tracking-tight">
-          Southern African<br />Development Community
-        </h1>
+        <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+          <h1 className="text-4xl md:text-6xl text-primary tracking-tight">
+            Southern African<br />Development Community
+          </h1>
+          <Link
+            href="/favorites"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-border bg-card text-sm font-sans font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors shrink-0 mt-1"
+            data-testid="link-favorites"
+          >
+            <Bookmark size={15} />
+            Saved
+            {favorites.length > 0 && (
+              <span className="ml-0.5 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                {favorites.length}
+              </span>
+            )}
+          </Link>
+        </div>
         <p className="text-xl md:text-2xl text-muted-foreground font-sans max-w-2xl">
           A definitive guide to higher education institutions across the SADC region. Explore academic excellence spanning fifteen nations.
         </p>
