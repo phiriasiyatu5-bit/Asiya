@@ -9,6 +9,9 @@ export type Country = {
   id: string;
   name: string;
   flag: string;
+  capital: string;
+  region: string;
+  languages: string[];
   universities: University[];
 };
 
@@ -17,6 +20,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "zambia",
     name: "Zambia",
     flag: "🇿🇲",
+    capital: "Lusaka",
+    region: "Central Africa",
+    languages: ["English", "Bemba", "Nyanja", "Tonga"],
     universities: [
       { name: "University of Zambia (UNZA)", type: "Public", founded: 1966, website: "https://www.unza.zm" },
       { name: "Copperbelt University", type: "Public", founded: 1987, website: "https://www.cbu.ac.zm" },
@@ -29,6 +35,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "malawi",
     name: "Malawi",
     flag: "🇲🇼",
+    capital: "Lilongwe",
+    region: "East Africa",
+    languages: ["English", "Chichewa"],
     universities: [
       { name: "University of Malawi", type: "Public", founded: 1965, website: "https://www.unima.ac.mw" },
       { name: "Mzuzu University", type: "Public", founded: 1997, website: "https://www.mzuni.ac.mw" },
@@ -41,6 +50,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "south-africa",
     name: "South Africa",
     flag: "🇿🇦",
+    capital: "Pretoria",
+    region: "Southern Africa",
+    languages: ["Zulu", "Xhosa", "Afrikaans", "English", "Sotho", "Tswana", "Tsonga", "Swati", "Venda", "Ndebele", "Pedi"],
     universities: [
       { name: "University of Cape Town", type: "Public", founded: 1829, website: "https://www.uct.ac.za" },
       { name: "University of Pretoria", type: "Public", founded: 1908, website: "https://www.up.ac.za" },
@@ -55,6 +67,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "zimbabwe",
     name: "Zimbabwe",
     flag: "🇿🇼",
+    capital: "Harare",
+    region: "Southern Africa",
+    languages: ["Shona", "Ndebele", "English"],
     universities: [
       { name: "University of Zimbabwe", type: "Public", founded: 1955, website: "https://www.uz.ac.zw" },
       { name: "National University of Science and Technology (NUST)", type: "Technical", founded: 1990, website: "https://www.nust.ac.zw" },
@@ -67,6 +82,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "botswana",
     name: "Botswana",
     flag: "🇧🇼",
+    capital: "Gaborone",
+    region: "Southern Africa",
+    languages: ["Setswana", "English"],
     universities: [
       { name: "University of Botswana", type: "Public", founded: 1982, website: "https://www.ub.bw" },
       { name: "Botswana International University of Science and Technology (BIUST)", type: "Technical", founded: 2012, website: "https://www.biust.ac.bw" },
@@ -77,6 +95,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "tanzania",
     name: "Tanzania",
     flag: "🇹🇿",
+    capital: "Dodoma",
+    region: "East Africa",
+    languages: ["Swahili", "English"],
     universities: [
       { name: "University of Dar es Salaam", type: "Public", founded: 1961, website: "https://www.udsm.ac.tz" },
       { name: "Muhimbili University", type: "Public", founded: 1963, website: "https://www.muhas.ac.tz" },
@@ -89,6 +110,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "mozambique",
     name: "Mozambique",
     flag: "🇲🇿",
+    capital: "Maputo",
+    region: "East Africa",
+    languages: ["Portuguese", "Emakhuwa", "Xichangana"],
     universities: [
       { name: "Eduardo Mondlane University", type: "Public", founded: 1962, website: "https://www.uem.mz" },
       { name: "Catholic University of Mozambique", type: "Private", founded: 1996, website: "https://www.ucm.ac.mz" },
@@ -100,6 +124,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "namibia",
     name: "Namibia",
     flag: "🇳🇦",
+    capital: "Windhoek",
+    region: "Southern Africa",
+    languages: ["English", "Afrikaans", "Oshiwambo", "Nama/Damara"],
     universities: [
       { name: "University of Namibia (UNAM)", type: "Public", founded: 1992, website: "https://www.unam.edu.na" },
       { name: "Namibia University of Science and Technology (NUST)", type: "Technical", founded: 1994, website: "https://www.nust.na" },
@@ -110,6 +137,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "angola",
     name: "Angola",
     flag: "🇦🇴",
+    capital: "Luanda",
+    region: "Central Africa",
+    languages: ["Portuguese", "Umbundu", "Kikongo", "Kimbundu"],
     universities: [
       { name: "Agostinho Neto University", type: "Public", founded: 1963, website: "https://www.uan.ao" },
       { name: "Catholic University of Angola", type: "Private", founded: 1992, website: "https://www.ucan.edu" },
@@ -120,6 +150,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "eswatini",
     name: "Eswatini",
     flag: "🇸🇿",
+    capital: "Mbabane",
+    region: "Southern Africa",
+    languages: ["Swati", "English"],
     universities: [
       { name: "University of Eswatini", type: "Public", founded: 1964, website: "https://www.uneswa.ac.sz" },
       { name: "Southern Africa Nazarene University", type: "Private", founded: 2007, website: "https://www.sanu.ac.sz" },
@@ -129,6 +162,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "lesotho",
     name: "Lesotho",
     flag: "🇱🇸",
+    capital: "Maseru",
+    region: "Southern Africa",
+    languages: ["Sesotho", "English"],
     universities: [
       { name: "National University of Lesotho", type: "Public", founded: 1945, website: "https://www.nul.ls" },
       { name: "Limkokwing University of Creative Technology", type: "Private", founded: 2008, website: "https://www.limkokwing.net" },
@@ -138,6 +174,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "madagascar",
     name: "Madagascar",
     flag: "🇲🇬",
+    capital: "Antananarivo",
+    region: "Indian Ocean",
+    languages: ["Malagasy", "French"],
     universities: [
       { name: "University of Antananarivo", type: "Public", founded: 1961, website: "https://www.univ-antananarivo.mg" },
       { name: "University of Toamasina", type: "Public", founded: 1977, website: "https://www.univ-toamasina.mg" },
@@ -148,6 +187,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "mauritius",
     name: "Mauritius",
     flag: "🇲🇺",
+    capital: "Port Louis",
+    region: "Indian Ocean",
+    languages: ["Creole", "English", "French"],
     universities: [
       { name: "University of Mauritius", type: "Public", founded: 1965, website: "https://www.uom.ac.mu" },
       { name: "University of Technology Mauritius", type: "Technical", founded: 2000, website: "https://www.utm.ac.mu" },
@@ -158,6 +200,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "drc",
     name: "Democratic Republic of Congo",
     flag: "🇨🇩",
+    capital: "Kinshasa",
+    region: "Central Africa",
+    languages: ["French", "Lingala", "Swahili", "Kikongo", "Tshiluba"],
     universities: [
       { name: "University of Kinshasa", type: "Public", founded: 1954, website: "https://www.unikin.ac.cd" },
       { name: "University of Lubumbashi", type: "Public", founded: 1955, website: "https://www.unilu.ac.cd" },
@@ -168,6 +213,9 @@ export const SADC_COUNTRIES: Country[] = [
     id: "seychelles",
     name: "Seychelles",
     flag: "🇸🇨",
+    capital: "Victoria",
+    region: "Indian Ocean",
+    languages: ["Seychellois Creole", "English", "French"],
     universities: [
       { name: "University of Seychelles", type: "Public", founded: 2009, website: "https://www.unisey.ac.sc" },
     ],
