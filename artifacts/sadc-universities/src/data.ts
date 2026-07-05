@@ -1,5 +1,8 @@
 export type University = {
   name: string;
+  type: "Public" | "Private" | "Technical";
+  founded: number;
+  website: string;
 };
 
 export type Country = {
@@ -15,11 +18,11 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Zambia",
     flag: "🇿🇲",
     universities: [
-      { name: "University of Zambia (UNZA)" },
-      { name: "Copperbelt University" },
-      { name: "Mulungushi University" },
-      { name: "Lusaka Apex Medical University" },
-      { name: "University of Lusaka" },
+      { name: "University of Zambia (UNZA)", type: "Public", founded: 1966, website: "https://www.unza.zm" },
+      { name: "Copperbelt University", type: "Public", founded: 1987, website: "https://www.cbu.ac.zm" },
+      { name: "Mulungushi University", type: "Public", founded: 2008, website: "https://www.mu.ac.zm" },
+      { name: "Lusaka Apex Medical University", type: "Private", founded: 2011, website: "https://www.lamu.ac.zm" },
+      { name: "University of Lusaka", type: "Private", founded: 2007, website: "https://www.unilus.ac.zm" },
     ],
   },
   {
@@ -27,11 +30,11 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Malawi",
     flag: "🇲🇼",
     universities: [
-      { name: "University of Malawi" },
-      { name: "Mzuzu University" },
-      { name: "Malawi University of Science and Technology (MUST)" },
-      { name: "Lilongwe University of Agriculture and Natural Resources" },
-      { name: "Catholic University of Malawi" },
+      { name: "University of Malawi", type: "Public", founded: 1965, website: "https://www.unima.ac.mw" },
+      { name: "Mzuzu University", type: "Public", founded: 1997, website: "https://www.mzuni.ac.mw" },
+      { name: "Malawi University of Science and Technology (MUST)", type: "Technical", founded: 2012, website: "https://www.must.ac.mw" },
+      { name: "Lilongwe University of Agriculture and Natural Resources", type: "Public", founded: 2011, website: "https://www.luanar.ac.mw" },
+      { name: "Catholic University of Malawi", type: "Private", founded: 2006, website: "https://www.cunima.ac.mw" },
     ],
   },
   {
@@ -39,13 +42,13 @@ export const SADC_COUNTRIES: Country[] = [
     name: "South Africa",
     flag: "🇿🇦",
     universities: [
-      { name: "University of Cape Town" },
-      { name: "University of Pretoria" },
-      { name: "University of the Witwatersrand (Wits)" },
-      { name: "Stellenbosch University" },
-      { name: "University of Johannesburg" },
-      { name: "University of KwaZulu-Natal" },
-      { name: "University of South Africa (UNISA)" },
+      { name: "University of Cape Town", type: "Public", founded: 1829, website: "https://www.uct.ac.za" },
+      { name: "University of Pretoria", type: "Public", founded: 1908, website: "https://www.up.ac.za" },
+      { name: "University of the Witwatersrand (Wits)", type: "Public", founded: 1922, website: "https://www.wits.ac.za" },
+      { name: "Stellenbosch University", type: "Public", founded: 1918, website: "https://www.sun.ac.za" },
+      { name: "University of Johannesburg", type: "Public", founded: 1904, website: "https://www.uj.ac.za" },
+      { name: "University of KwaZulu-Natal", type: "Public", founded: 2004, website: "https://www.ukzn.ac.za" },
+      { name: "University of South Africa (UNISA)", type: "Public", founded: 1873, website: "https://www.unisa.ac.za" },
     ],
   },
   {
@@ -53,11 +56,11 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Zimbabwe",
     flag: "🇿🇼",
     universities: [
-      { name: "University of Zimbabwe" },
-      { name: "National University of Science and Technology (NUST)" },
-      { name: "Midlands State University" },
-      { name: "Bindura University" },
-      { name: "Chinhoyi University of Technology" },
+      { name: "University of Zimbabwe", type: "Public", founded: 1955, website: "https://www.uz.ac.zw" },
+      { name: "National University of Science and Technology (NUST)", type: "Technical", founded: 1990, website: "https://www.nust.ac.zw" },
+      { name: "Midlands State University", type: "Public", founded: 1999, website: "https://www.msu.ac.zw" },
+      { name: "Bindura University", type: "Public", founded: 1996, website: "https://www.buse.ac.zw" },
+      { name: "Chinhoyi University of Technology", type: "Technical", founded: 1999, website: "https://www.cut.ac.zw" },
     ],
   },
   {
@@ -65,9 +68,9 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Botswana",
     flag: "🇧🇼",
     universities: [
-      { name: "University of Botswana" },
-      { name: "Botswana International University of Science and Technology (BIUST)" },
-      { name: "Botswana Accountancy College" },
+      { name: "University of Botswana", type: "Public", founded: 1982, website: "https://www.ub.bw" },
+      { name: "Botswana International University of Science and Technology (BIUST)", type: "Technical", founded: 2012, website: "https://www.biust.ac.bw" },
+      { name: "Botswana Accountancy College", type: "Private", founded: 1997, website: "https://www.bac.ac.bw" },
     ],
   },
   {
@@ -75,11 +78,11 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Tanzania",
     flag: "🇹🇿",
     universities: [
-      { name: "University of Dar es Salaam" },
-      { name: "Muhimbili University" },
-      { name: "Sokoine University of Agriculture" },
-      { name: "Mzumbe University" },
-      { name: "Ardhi University" },
+      { name: "University of Dar es Salaam", type: "Public", founded: 1961, website: "https://www.udsm.ac.tz" },
+      { name: "Muhimbili University", type: "Public", founded: 1963, website: "https://www.muhas.ac.tz" },
+      { name: "Sokoine University of Agriculture", type: "Public", founded: 1984, website: "https://www.suanet.ac.tz" },
+      { name: "Mzumbe University", type: "Public", founded: 1972, website: "https://www.mzumbe.ac.tz" },
+      { name: "Ardhi University", type: "Technical", founded: 1974, website: "https://www.aru.ac.tz" },
     ],
   },
   {
@@ -87,10 +90,10 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Mozambique",
     flag: "🇲🇿",
     universities: [
-      { name: "Eduardo Mondlane University" },
-      { name: "Catholic University of Mozambique" },
-      { name: "Pedagogical University" },
-      { name: "A Politécnica" },
+      { name: "Eduardo Mondlane University", type: "Public", founded: 1962, website: "https://www.uem.mz" },
+      { name: "Catholic University of Mozambique", type: "Private", founded: 1996, website: "https://www.ucm.ac.mz" },
+      { name: "Pedagogical University", type: "Public", founded: 1985, website: "https://www.up.ac.mz" },
+      { name: "A Politécnica", type: "Private", founded: 1995, website: "https://www.apolitecnica.ac.mz" },
     ],
   },
   {
@@ -98,9 +101,9 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Namibia",
     flag: "🇳🇦",
     universities: [
-      { name: "University of Namibia (UNAM)" },
-      { name: "Namibia University of Science and Technology (NUST)" },
-      { name: "International University of Management" },
+      { name: "University of Namibia (UNAM)", type: "Public", founded: 1992, website: "https://www.unam.edu.na" },
+      { name: "Namibia University of Science and Technology (NUST)", type: "Technical", founded: 1994, website: "https://www.nust.na" },
+      { name: "International University of Management", type: "Private", founded: 1994, website: "https://www.ium.edu.na" },
     ],
   },
   {
@@ -108,9 +111,9 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Angola",
     flag: "🇦🇴",
     universities: [
-      { name: "Agostinho Neto University" },
-      { name: "Catholic University of Angola" },
-      { name: "Universidade Metodista de Angola" },
+      { name: "Agostinho Neto University", type: "Public", founded: 1963, website: "https://www.uan.ao" },
+      { name: "Catholic University of Angola", type: "Private", founded: 1992, website: "https://www.ucan.edu" },
+      { name: "Universidade Metodista de Angola", type: "Private", founded: 2009, website: "https://www.uma.op.ac.mz" },
     ],
   },
   {
@@ -118,8 +121,8 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Eswatini",
     flag: "🇸🇿",
     universities: [
-      { name: "University of Eswatini" },
-      { name: "Southern Africa Nazarene University" },
+      { name: "University of Eswatini", type: "Public", founded: 1964, website: "https://www.uneswa.ac.sz" },
+      { name: "Southern Africa Nazarene University", type: "Private", founded: 2007, website: "https://www.sanu.ac.sz" },
     ],
   },
   {
@@ -127,8 +130,8 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Lesotho",
     flag: "🇱🇸",
     universities: [
-      { name: "National University of Lesotho" },
-      { name: "Limkokwing University of Creative Technology" },
+      { name: "National University of Lesotho", type: "Public", founded: 1945, website: "https://www.nul.ls" },
+      { name: "Limkokwing University of Creative Technology", type: "Private", founded: 2008, website: "https://www.limkokwing.net" },
     ],
   },
   {
@@ -136,9 +139,9 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Madagascar",
     flag: "🇲🇬",
     universities: [
-      { name: "University of Antananarivo" },
-      { name: "University of Toamasina" },
-      { name: "University of Mahajanga" },
+      { name: "University of Antananarivo", type: "Public", founded: 1961, website: "https://www.univ-antananarivo.mg" },
+      { name: "University of Toamasina", type: "Public", founded: 1977, website: "https://www.univ-toamasina.mg" },
+      { name: "University of Mahajanga", type: "Public", founded: 1977, website: "https://www.univ-mahajanga.mg" },
     ],
   },
   {
@@ -146,9 +149,9 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Mauritius",
     flag: "🇲🇺",
     universities: [
-      { name: "University of Mauritius" },
-      { name: "University of Technology Mauritius" },
-      { name: "Middlesex University Mauritius" },
+      { name: "University of Mauritius", type: "Public", founded: 1965, website: "https://www.uom.ac.mu" },
+      { name: "University of Technology Mauritius", type: "Technical", founded: 2000, website: "https://www.utm.ac.mu" },
+      { name: "Middlesex University Mauritius", type: "Private", founded: 2010, website: "https://www.mdx.ac.mu" },
     ],
   },
   {
@@ -156,9 +159,9 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Democratic Republic of Congo",
     flag: "🇨🇩",
     universities: [
-      { name: "University of Kinshasa" },
-      { name: "University of Lubumbashi" },
-      { name: "Catholic University of Congo" },
+      { name: "University of Kinshasa", type: "Public", founded: 1954, website: "https://www.unikin.ac.cd" },
+      { name: "University of Lubumbashi", type: "Public", founded: 1955, website: "https://www.unilu.ac.cd" },
+      { name: "Catholic University of Congo", type: "Private", founded: 1963, website: "https://www.ucc.ac.cd" },
     ],
   },
   {
@@ -166,7 +169,7 @@ export const SADC_COUNTRIES: Country[] = [
     name: "Seychelles",
     flag: "🇸🇨",
     universities: [
-      { name: "University of Seychelles" },
+      { name: "University of Seychelles", type: "Public", founded: 2009, website: "https://www.unisey.ac.sc" },
     ],
   },
 ];
